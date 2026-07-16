@@ -1,21 +1,23 @@
-# Gender and Age Detection
+# Gender & Age Detection
 
-A Python computer vision script to detect faces and predict the gender and age of a person in real-time using OpenCV and Deep Neural Networks (DNN).
+A Python computer vision project to detect faces and predict the gender and age of a person in real-time using OpenCV, Deep Neural Networks (DNN), and a Flask web backend.
 
 ## Features
-- **Face Detection:** Uses a Single Shot Detector (SSD) framework with a ResNet base network to accurately locate faces in the frame.
+- **Professional Web UI:** A beautiful, responsive interface that works seamlessly in the browser.
+- **Camera & Image Upload:** UI supports both uploading image files and snapping live photos directly from your webcam.
+- **Face Detection:** Uses a Single Shot Detector (SSD) framework with a ResNet base network to accurately locate faces.
 - **Age Prediction:** Classifies age into 8 distinct ranges: `(0-2), (4-6), (8-12), (15-20), (25-32), (38-43), (48-53), (60-100)`.
 - **Gender Prediction:** Classifies gender as either `Male` or `Female`.
-- **Image or Webcam Input:** Supports analyzing both static images and live video feeds from your webcam.
 
 ## Prerequisites
 
 - Python 3.x
+- Flask (`flask`)
 - OpenCV (`opencv-python`)
 
-You can install the required dependency via pip:
+You can install the required dependencies via pip:
 ```bash
-pip install opencv-python
+pip install opencv-python flask
 ```
 
 ## Model Weights (Required)
@@ -33,24 +35,33 @@ You will need the following files:
   - `gender_net.caffemodel`
   - `gender_deploy.prototxt` (Already included)
 
-## Usage
+## Usage (Web App)
 
-### Run on Webcam
-Simply run the script without any arguments to use your default webcam:
+To start the local web server with the full graphical interface:
+```bash
+python app.py
+```
+Then, open your browser and go to: `http://127.0.0.1:5000`
+
+## Usage (CLI)
+
+If you prefer to run the script via the command line without the web interface:
+
+**Run on Default Webcam:**
 ```bash
 python gad.py
 ```
 
-### Run on an Image
-Pass the path to an image using the `--image` argument:
+**Run on an Image:**
 ```bash
-python gad.py --image man1.jpg
+python gad.py --image path/to/image.jpg
 ```
 
-*(Press any key to close the window when viewing a static image).*
+## Disclaimer
+This AI tool uses computer vision algorithms to estimate demographic properties. Model accuracy heavily depends on image quality. Poor lighting, extreme facial angles, occlusions (like glasses or masks), or multiple faces may result in incorrect predictions or errors. Results should be treated as estimates.
 
-## How it Works
-1. The script first processes the input frame to detect a face using a pre-trained SSD face detector.
-2. If a face is found, it extracts a bounding box, applies padding, and crops the region of interest (ROI).
-3. The cropped face ROI is passed sequentially into the `Gender` and `Age` classification Caffe models.
-4. The prediction results are then drawn onto the original image as an overlay.
+## License
+This project is open-source and available under the [MIT License](LICENSE).
+
+---
+Made by [Prayatshu Misra](https://github.com/PrayatshuMisra)

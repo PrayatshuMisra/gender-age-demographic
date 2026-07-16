@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Demographic Analysis</title>
-    <!-- Using Inter for a clean, professional typography -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <title>Gender Age Detector</title>
+    <!-- Professional Typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-color: #f8fafc;
@@ -15,7 +15,6 @@
             --border-color: #e2e8f0;
             --primary: #0f172a;
             --primary-hover: #1e293b;
-            --accent: #2563eb;
             --radius-md: 8px;
             --radius-lg: 12px;
         }
@@ -38,42 +37,152 @@
             padding: 2rem;
         }
 
-        .container {
-            background-color: var(--card-bg);
-            border-radius: var(--radius-lg);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
-            border: 1px solid var(--border-color);
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 3rem;
             width: 100%;
-            max-width: 560px;
-            padding: 2.5rem;
+            max-width: 1100px;
         }
 
-        header {
-            text-align: center;
+        @media (min-width: 850px) {
+            .main-layout {
+                grid-template-columns: 400px 1fr;
+                gap: 4rem;
+                align-items: start;
+            }
+        }
+
+        /* ----- Left Panel ----- */
+        .info-panel {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .info-panel header {
             margin-bottom: 2rem;
         }
 
-        h1 {
-            font-size: 1.5rem;
+        .info-panel h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            margin-bottom: 0.5rem;
+            line-height: 1.1;
+        }
+
+        .info-panel p.subtitle {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        .project-details {
+            margin-bottom: 2rem;
+        }
+
+        .project-details h3 {
+            font-size: 1.05rem;
             font-weight: 600;
-            letter-spacing: -0.025em;
+            margin-bottom: 0.75rem;
+            color: var(--text-main);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .project-details p, .project-details ul {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .project-details ul {
+            padding-left: 1.25rem;
+        }
+        
+        .project-details li {
             margin-bottom: 0.5rem;
         }
 
-        p.subtitle {
+        .disclaimer {
+            padding: 1.25rem;
+            background-color: #f1f5f9;
+            border-left: 4px solid var(--text-muted);
+            border-radius: var(--radius-md);
+            font-size: 0.85rem;
             color: var(--text-muted);
-            font-size: 0.95rem;
+            margin-bottom: 2rem;
         }
 
+        .disclaimer strong {
+            color: var(--text-main);
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+
+        footer {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-top: auto;
+        }
+
+        footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* ----- Right Panel (App Card) ----- */
+        .app-card {
+            background-color: var(--card-bg);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+            border: 1px solid var(--border-color);
+            padding: 2.5rem;
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 0.75rem;
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .tab:hover {
+            color: var(--text-main);
+        }
+
+        .tab.active {
+            color: var(--text-main);
+            border-bottom-color: var(--primary);
+        }
+
+        /* Upload Area */
         .upload-area {
             border: 2px dashed var(--border-color);
             border-radius: var(--radius-md);
-            padding: 3rem 2rem;
+            padding: 3.5rem 2rem;
             text-align: center;
             cursor: pointer;
-            transition: all 0.2s ease;
             background-color: #fafafa;
-            margin-bottom: 1.5rem;
+            transition: all 0.2s ease;
         }
 
         .upload-area:hover, .upload-area.dragover {
@@ -90,7 +199,6 @@
 
         .upload-text {
             font-size: 0.95rem;
-            color: var(--text-main);
             font-weight: 500;
         }
 
@@ -104,13 +212,56 @@
             display: none;
         }
 
+        /* Camera Area */
+        .camera-container {
+            display: none;
+            position: relative;
+            width: 100%;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            background: #000;
+            margin-bottom: 1.5rem;
+        }
+
+        video {
+            width: 100%;
+            display: block;
+        }
+
+        .camera-overlay {
+            position: absolute;
+            bottom: 1rem;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .capture-btn {
+            background: rgba(255, 255, 255, 0.9);
+            color: #000;
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 999px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.1s;
+        }
+        
+        .capture-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Preview & Results */
         .preview-container {
             display: none;
-            margin-bottom: 1.5rem;
             border-radius: var(--radius-md);
             overflow: hidden;
             border: 1px solid var(--border-color);
             background: #f1f5f9;
+            margin-bottom: 1.5rem;
         }
 
         .preview-image {
@@ -119,6 +270,7 @@
             max-height: 350px;
             object-fit: contain;
             display: block;
+            margin: 0 auto;
         }
 
         .action-row {
@@ -166,7 +318,6 @@
             background-color: #f8fafc;
         }
 
-        /* Results Display */
         .results-panel {
             display: none;
             margin-top: 1.5rem;
@@ -221,26 +372,69 @@
 </head>
 <body>
 
-    <div class="container">
-        <header>
-            <h1>Demographic Analysis</h1>
-            <p class="subtitle">Upload a portrait to analyze age and gender</p>
-        </header>
+    <div class="main-layout">
+        
+        <!-- Left Panel: Information -->
+        <div class="info-panel">
+            <header>
+                <h1>Gender-Age Detection</h1>
+                <p class="subtitle">Predict demographic properties from facial features in real-time.</p>
+            </header>
 
-        <main>
-            <div class="upload-area" id="dropZone">
-                <svg class="upload-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
-                </svg>
-                <div class="upload-text">Click to upload or drag and drop</div>
-                <div class="upload-hint">JPG, PNG or WEBP (Max 5MB)</div>
-                <input type="file" id="fileInput" accept="image/jpeg, image/png, image/webp">
+            <div class="project-details">
+                <h3>About This Project</h3>
+                <p>This tool utilizes Deep Neural Networks (DNN) trained on computer vision models to estimate a person's age and gender. It processes the image to locate a face using a Single Shot Detector (SSD), and subsequently runs classification networks on the isolated region.</p>
+                
+                <h3>Instructions</h3>
+                <ul>
+                    <li><strong>Upload:</strong> Drag and drop a clear, well-lit portrait photo. Avoid group photos for best accuracy.</li>
+                    <li><strong>Live Camera:</strong> Ensure your face is centered and clearly visible before capturing the photo.</li>
+                </ul>
             </div>
 
+            <div class="disclaimer">
+                <strong>Important Notice</strong> 
+                Model accuracy heavily depends on image quality. Poor lighting, extreme facial angles, occlusions (like glasses or masks), or multiple faces may result in incorrect predictions or errors. Results should be treated as estimates.
+            </div>
+            
+            <footer>
+                Made by <a href="https://github.com/PrayatshuMisra" target="_blank" rel="noopener noreferrer">Prayatshu Misra</a>
+            </footer>
+        </div>
+
+        <!-- Right Panel: App Interface -->
+        <div class="app-card">
+            <div class="tabs">
+                <button class="tab active" id="tabUpload">Upload Image</button>
+                <button class="tab" id="tabCamera">Live Camera</button>
+            </div>
+
+            <!-- Upload Area -->
+            <div id="uploadView">
+                <div class="upload-area" id="dropZone">
+                    <svg class="upload-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
+                    </svg>
+                    <div class="upload-text">Click to upload or drag and drop</div>
+                    <div class="upload-hint">JPG, PNG or WEBP (Max 5MB)</div>
+                    <input type="file" id="fileInput" accept="image/jpeg, image/png, image/webp">
+                </div>
+            </div>
+
+            <!-- Camera Area -->
+            <div id="cameraView" class="camera-container">
+                <video id="videoElement" autoplay playsinline></video>
+                <div class="camera-overlay">
+                    <button class="capture-btn" id="captureBtn">Capture Photo</button>
+                </div>
+            </div>
+
+            <!-- Image Preview -->
             <div class="preview-container" id="previewContainer">
                 <img id="imagePreview" class="preview-image" src="" alt="Image Preview">
             </div>
 
+            <!-- Results Output -->
             <div class="results-panel" id="resultsPanel">
                 <div class="results-grid">
                     <div class="result-card">
@@ -254,17 +448,23 @@
                 </div>
             </div>
 
+            <!-- Controls -->
             <div class="action-row">
-                <button class="btn btn-secondary" id="resetBtn">Reset</button>
+                <button class="btn btn-secondary" id="resetBtn">Start Over</button>
                 <button class="btn btn-primary" id="analyzeBtn" disabled>
                     <div class="loading-spinner" id="spinner"></div>
                     <span id="btnText">Analyze Image</span>
                 </button>
             </div>
-        </main>
+        </div>
+
     </div>
 
+    <!-- Hidden canvas to grab video frame -->
+    <canvas id="canvas" style="display: none;"></canvas>
+
     <script>
+        // DOM Elements
         const dropZone = document.getElementById('dropZone');
         const fileInput = document.getElementById('fileInput');
         const previewContainer = document.getElementById('previewContainer');
@@ -276,18 +476,88 @@
         const ageResult = document.getElementById('ageResult');
         const spinner = document.getElementById('spinner');
         const btnText = document.getElementById('btnText');
+        
+        // Tabs & Camera
+        const tabUpload = document.getElementById('tabUpload');
+        const tabCamera = document.getElementById('tabCamera');
+        const uploadView = document.getElementById('uploadView');
+        const cameraView = document.getElementById('cameraView');
+        const videoElement = document.getElementById('videoElement');
+        const captureBtn = document.getElementById('captureBtn');
+        const canvas = document.getElementById('canvas');
 
         let currentFile = null;
+        let stream = null;
 
-        // Handle drag and drop events
+        // ---- Tab Switching ----
+        tabUpload.addEventListener('click', () => {
+            stopCamera();
+            tabUpload.classList.add('active');
+            tabCamera.classList.remove('active');
+            uploadView.style.display = 'block';
+            cameraView.style.display = 'none';
+            resetUI();
+        });
+
+        tabCamera.addEventListener('click', () => {
+            tabUpload.classList.remove('active');
+            tabCamera.classList.add('active');
+            uploadView.style.display = 'none';
+            previewContainer.style.display = 'none';
+            resetUI();
+            startCamera();
+        });
+
+        // ---- Camera Logic ----
+        async function startCamera() {
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } });
+                videoElement.srcObject = stream;
+                cameraView.style.display = 'block';
+            } catch (err) {
+                console.error("Error accessing camera: ", err);
+                alert("Could not access the camera. Please make sure permissions are granted.");
+                tabUpload.click();
+            }
+        }
+
+        function stopCamera() {
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+                stream = null;
+            }
+            videoElement.srcObject = null;
+        }
+
+        captureBtn.addEventListener('click', () => {
+            // Draw current video frame to canvas
+            canvas.width = videoElement.videoWidth;
+            canvas.height = videoElement.videoHeight;
+            const context = canvas.getContext('2d');
+            context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+            
+            // Convert to blob
+            canvas.toBlob((blob) => {
+                const file = new File([blob], "camera-capture.jpg", { type: "image/jpeg" });
+                currentFile = file;
+                
+                // Show preview
+                imagePreview.src = URL.createObjectURL(blob);
+                cameraView.style.display = 'none';
+                stopCamera();
+                
+                previewContainer.style.display = 'block';
+                analyzeBtn.disabled = false;
+                resetBtn.style.display = 'block';
+            }, 'image/jpeg', 0.95);
+        });
+
+        // ---- Drag and Drop Logic ----
         ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
             dropZone.addEventListener(eventName, preventDefaults, false);
         });
 
-        function preventDefaults(e) {
-            e.preventDefault();
-            e.stopPropagation();
-        }
+        function preventDefaults(e) { e.preventDefault(); e.stopPropagation(); }
 
         ['dragenter', 'dragover'].forEach(eventName => {
             dropZone.addEventListener(eventName, () => dropZone.classList.add('dragover'), false);
@@ -297,19 +567,13 @@
             dropZone.addEventListener(eventName, () => dropZone.classList.remove('dragover'), false);
         });
 
-        dropZone.addEventListener('drop', handleDrop, false);
+        dropZone.addEventListener('drop', (e) => {
+            if (e.dataTransfer.files.length) handleFiles(e.dataTransfer.files[0]);
+        });
         dropZone.addEventListener('click', () => fileInput.click());
-        fileInput.addEventListener('change', handleFileSelect);
-
-        function handleDrop(e) {
-            const dt = e.dataTransfer;
-            const files = dt.files;
-            if (files.length) handleFiles(files[0]);
-        }
-
-        function handleFileSelect(e) {
+        fileInput.addEventListener('change', function() {
             if (this.files.length) handleFiles(this.files[0]);
-        }
+        });
 
         function handleFiles(file) {
             if (!file.type.startsWith('image/')) return;
@@ -319,38 +583,45 @@
             
             reader.onload = function(e) {
                 imagePreview.src = e.target.result;
-                dropZone.style.display = 'none';
+                uploadView.style.display = 'none';
                 previewContainer.style.display = 'block';
                 analyzeBtn.disabled = false;
                 resetBtn.style.display = 'block';
                 resultsPanel.style.display = 'none';
             }
-            
             reader.readAsDataURL(file);
         }
 
-        resetBtn.addEventListener('click', () => {
+        // ---- UI State Logic ----
+        function resetUI() {
             currentFile = null;
             fileInput.value = '';
-            dropZone.style.display = 'block';
+            
+            if (tabUpload.classList.contains('active')) {
+                uploadView.style.display = 'block';
+            } else {
+                startCamera();
+            }
+            
             previewContainer.style.display = 'none';
             resultsPanel.style.display = 'none';
             analyzeBtn.disabled = true;
             resetBtn.style.display = 'none';
             
-            // Reset button state just in case
             spinner.style.display = 'none';
             btnText.textContent = 'Analyze Image';
-            analyzeBtn.disabled = true;
-        });
+        }
 
+        resetBtn.addEventListener('click', resetUI);
+
+        // ---- Fetch API call ----
         analyzeBtn.addEventListener('click', () => {
             if (!currentFile) return;
 
             // UI Loading state
             analyzeBtn.disabled = true;
             resetBtn.disabled = true;
-            spinner.style.display = 'block';
+            spinner.style.display = 'inline-block';
             btnText.textContent = 'Processing...';
             resultsPanel.style.display = 'none';
 
@@ -364,8 +635,8 @@
             .then(res => res.json())
             .then(data => {
                 if (data.error) {
-                    alert(data.error);
-                    resetBtn.click();
+                    alert("Error: " + data.error);
+                    resetUI();
                     return;
                 }
                 genderResult.textContent = data.gender;
@@ -374,14 +645,14 @@
                 // Restore UI state
                 spinner.style.display = 'none';
                 btnText.textContent = 'Analyze Image';
-                analyzeBtn.disabled = false;
+                analyzeBtn.disabled = true; // disable since we already analyzed
                 resetBtn.disabled = false;
                 resultsPanel.style.display = 'block';
             })
             .catch(err => {
                 console.error(err);
                 alert('A network error occurred. Is the Flask backend running?');
-                resetBtn.click();
+                resetUI();
             });
         });
     </script>
