@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demographic Analysis</title>
+    <!-- Using Inter for a clean, professional typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --primary: #0f172a;
+            --primary-hover: #1e293b;
+            --accent: #2563eb;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            background-color: var(--card-bg);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border-color);
+            width: 100%;
+            max-width: 560px;
+            padding: 2.5rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: -0.025em;
+            margin-bottom: 0.5rem;
+        }
+
+        p.subtitle {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .upload-area {
+            border: 2px dashed var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 3rem 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background-color: #fafafa;
+            margin-bottom: 1.5rem;
+        }
+
+        .upload-area:hover, .upload-area.dragover {
+            border-color: var(--text-muted);
+            background-color: #f1f5f9;
+        }
+
+        .upload-icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 1rem;
+            color: var(--text-muted);
+        }
+
+        .upload-text {
+            font-size: 0.95rem;
+            color: var(--text-main);
+            font-weight: 500;
+        }
+
+        .upload-hint {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .preview-container {
+            display: none;
+            margin-bottom: 1.5rem;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            background: #f1f5f9;
+        }
+
+        .preview-image {
+            width: 100%;
+            height: auto;
+            max-height: 350px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .action-row {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius-md);
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+        }
+        
+        .btn-primary:disabled {
+            background-color: var(--text-muted);
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .btn-secondary {
+            background-color: white;
+            color: var(--text-main);
+            border-color: var(--border-color);
+            display: none;
+        }
+
+        .btn-secondary:hover {
+            background-color: #f8fafc;
+        }
+
+        /* Results Display */
+        .results-panel {
+            display: none;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .result-card {
+            background-color: #f8fafc;
+            border: 1px solid var(--border-color);
+            padding: 1.25rem;
+            border-radius: var(--radius-md);
+            text-align: center;
+        }
+
+        .result-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.25rem;
+        }
+
+        .result-value {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .loading-spinner {
+            display: none;
+            width: 1.25rem;
+            height: 1.25rem;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 0.5rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Demographic Analysis</h1>
+            <p class="subtitle">Upload a portrait to analyze age and gender</p>
+        </header>
+
+        <main>
+            <div class="upload-area" id="dropZone">
+                <svg class="upload-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
+                </svg>
+                <div class="upload-text">Click to upload or drag and drop</div>
+                <div class="upload-hint">JPG, PNG or WEBP (Max 5MB)</div>
+                <input type="file" id="fileInput" accept="image/jpeg, image/png, image/webp">
+            </div>
+
+            <div class="preview-container" id="previewContainer">
+                <img id="imagePreview" class="preview-image" src="" alt="Image Preview">
+            </div>
+
+            <div class="results-panel" id="resultsPanel">
+                <div class="results-grid">
+                    <div class="result-card">
+                        <div class="result-label">Estimated Gender</div>
+                        <div class="result-value" id="genderResult">-</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-label">Estimated Age</div>
+                        <div class="result-value" id="ageResult">-</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="action-row">
+                <button class="btn btn-secondary" id="resetBtn">Reset</button>
+                <button class="btn btn-primary" id="analyzeBtn" disabled>
+                    <div class="loading-spinner" id="spinner"></div>
+                    <span id="btnText">Analyze Image</span>
+                </button>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+        const previewContainer = document.getElementById('previewContainer');
+        const imagePreview = document.getElementById('imagePreview');
+        const analyzeBtn = document.getElementById('analyzeBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const resultsPanel = document.getElementById('resultsPanel');
+        const genderResult = document.getElementById('genderResult');
+        const ageResult = document.getElementById('ageResult');
+        const spinner = document.getElementById('spinner');
+        const btnText = document.getElementById('btnText');
+
+        let currentFile = null;
+
+        // Handle drag and drop events
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropZone.addEventListener(eventName, () => dropZone.classList.add('dragover'), false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, () => dropZone.classList.remove('dragover'), false);
+        });
+
+        dropZone.addEventListener('drop', handleDrop, false);
+        dropZone.addEventListener('click', () => fileInput.click());
+        fileInput.addEventListener('change', handleFileSelect);
+
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            if (files.length) handleFiles(files[0]);
+        }
+
+        function handleFileSelect(e) {
+            if (this.files.length) handleFiles(this.files[0]);
+        }
+
+        function handleFiles(file) {
+            if (!file.type.startsWith('image/')) return;
+            
+            currentFile = file;
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                imagePreview.src = e.target.result;
+                dropZone.style.display = 'none';
+                previewContainer.style.display = 'block';
+                analyzeBtn.disabled = false;
+                resetBtn.style.display = 'block';
+                resultsPanel.style.display = 'none';
+            }
+            
+            reader.readAsDataURL(file);
+        }
+
+        resetBtn.addEventListener('click', () => {
+            currentFile = null;
+            fileInput.value = '';
+            dropZone.style.display = 'block';
+            previewContainer.style.display = 'none';
+            resultsPanel.style.display = 'none';
+            analyzeBtn.disabled = true;
+            resetBtn.style.display = 'none';
+            
+            // Reset button state just in case
+            spinner.style.display = 'none';
+            btnText.textContent = 'Analyze Image';
+            analyzeBtn.disabled = true;
+        });
+
+        analyzeBtn.addEventListener('click', () => {
+            if (!currentFile) return;
+
+            // UI Loading state
+            analyzeBtn.disabled = true;
+            resetBtn.disabled = true;
+            spinner.style.display = 'block';
+            btnText.textContent = 'Processing...';
+            resultsPanel.style.display = 'none';
+
+            const formData = new FormData();
+            formData.append('image', currentFile);
+            
+            fetch('/api/analyze', { 
+                method: 'POST', 
+                body: formData 
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.error);
+                    resetBtn.click();
+                    return;
+                }
+                genderResult.textContent = data.gender;
+                ageResult.textContent = data.age;
+                
+                // Restore UI state
+                spinner.style.display = 'none';
+                btnText.textContent = 'Analyze Image';
+                analyzeBtn.disabled = false;
+                resetBtn.disabled = false;
+                resultsPanel.style.display = 'block';
+            })
+            .catch(err => {
+                console.error(err);
+                alert('A network error occurred. Is the Flask backend running?');
+                resetBtn.click();
+            });
+        });
+    </script>
+</body>
+</html>
