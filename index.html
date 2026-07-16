@@ -3,20 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gender Age Detector</title>
-    <!-- Professional Typography -->
+    <title>Gender & Age Detector</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #f8fafc;
-            --card-bg: #ffffff;
+            /* Color Palette */
+            --bg-color: #f1f5f9;
+            --panel-left-bg: #ffffff;
+            --panel-right-bg: #ffffff;
             --text-main: #0f172a;
             --text-muted: #64748b;
             --border-color: #e2e8f0;
             --primary: #0f172a;
             --primary-hover: #1e293b;
+            --primary-light: #f8fafc;
+            --accent: #3b82f6;
             --radius-md: 8px;
-            --radius-lg: 12px;
+            --radius-lg: 24px;
+            --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         * {
@@ -29,165 +33,172 @@
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-main);
-            line-height: 1.5;
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* ----- Main Layout ----- */
+        .page-wrapper {
+            flex: 1;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            padding: 2rem;
+            padding: 3rem 1.5rem;
         }
 
-        .main-layout {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 3rem;
+        .unified-container {
+            display: flex;
+            flex-direction: column;
+            background: var(--panel-left-bg);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.05);
             width: 100%;
-            max-width: 1100px;
+            max-width: 1150px;
+            overflow: hidden;
         }
 
-        @media (min-width: 850px) {
-            .main-layout {
-                grid-template-columns: 400px 1fr;
-                gap: 4rem;
-                align-items: start;
+        @media (min-width: 900px) {
+            .unified-container {
+                flex-direction: row;
+                min-height: 620px;
             }
         }
 
-        /* ----- Left Panel ----- */
+        /* ----- Left Panel (Info) ----- */
         .info-panel {
+            flex: 1;
+            padding: 3.5rem;
+            background-color: var(--primary-light);
+            border-right: 1px solid var(--border-color);
             display: flex;
             flex-direction: column;
+            justify-content: space-between;
         }
 
-        .info-panel header {
-            margin-bottom: 2rem;
-        }
-
-        .info-panel h1 {
+        .info-panel header h1 {
             font-size: 2.5rem;
-            font-weight: 700;
+            font-weight: 800;
             letter-spacing: -0.03em;
-            margin-bottom: 0.5rem;
             line-height: 1.1;
+            margin-bottom: 1rem;
+            color: #020617;
         }
 
         .info-panel p.subtitle {
             color: var(--text-muted);
             font-size: 1.1rem;
-        }
-
-        .project-details {
-            margin-bottom: 2rem;
+            line-height: 1.5;
+            margin-bottom: 2.5rem;
         }
 
         .project-details h3 {
-            font-size: 1.05rem;
-            font-weight: 600;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-top: 2rem;
             margin-bottom: 0.75rem;
             color: var(--text-main);
             text-transform: uppercase;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.08em;
         }
 
         .project-details p, .project-details ul {
             font-size: 0.95rem;
-            color: var(--text-muted);
-            margin-bottom: 1.5rem;
-            line-height: 1.6;
+            color: #475569;
+            margin-bottom: 1rem;
         }
 
         .project-details ul {
             padding-left: 1.25rem;
         }
-        
+
         .project-details li {
             margin-bottom: 0.5rem;
         }
 
         .disclaimer {
+            margin-top: auto;
             padding: 1.25rem;
-            background-color: #f1f5f9;
-            border-left: 4px solid var(--text-muted);
+            background-color: #ffffff;
+            border-left: 3px solid var(--text-muted);
             border-radius: var(--radius-md);
             font-size: 0.85rem;
             color: var(--text-muted);
-            margin-bottom: 2rem;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.02);
         }
 
         .disclaimer strong {
             color: var(--text-main);
             display: block;
-            margin-bottom: 0.25rem;
-        }
-
-        footer {
+            margin-bottom: 0.35rem;
             font-size: 0.9rem;
-            color: var(--text-muted);
-            margin-top: auto;
         }
 
-        footer a {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 600;
+        /* ----- Right Panel (App Interface) ----- */
+        .app-panel {
+            flex: 1.15;
+            padding: 3.5rem;
+            background-color: var(--panel-right-bg);
+            display: flex;
+            flex-direction: column;
         }
 
-        footer a:hover {
-            text-decoration: underline;
-        }
-
-        /* ----- Right Panel (App Card) ----- */
-        .app-card {
-            background-color: var(--card-bg);
-            border-radius: var(--radius-lg);
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
-            border: 1px solid var(--border-color);
-            padding: 2.5rem;
-        }
-
+        /* Segmented Control for Tabs */
         .tabs {
             display: flex;
-            border-bottom: 1px solid var(--border-color);
-            margin-bottom: 1.5rem;
+            background-color: var(--bg-color);
+            padding: 0.35rem;
+            border-radius: var(--radius-md);
+            margin-bottom: 2.5rem;
         }
 
         .tab {
             flex: 1;
             text-align: center;
-            padding: 0.75rem;
-            background: none;
+            padding: 0.75rem 1rem;
+            background: transparent;
             border: none;
-            border-bottom: 2px solid transparent;
+            border-radius: calc(var(--radius-md) - 2px);
             font-size: 0.95rem;
-            font-weight: 500;
+            font-weight: 600;
             color: var(--text-muted);
             cursor: pointer;
-            transition: all 0.2s;
+            transition: var(--transition);
         }
 
-        .tab:hover {
+        .tab:hover:not(.active) {
             color: var(--text-main);
         }
 
         .tab.active {
+            background-color: #ffffff;
             color: var(--text-main);
-            border-bottom-color: var(--primary);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+
+        /* Work Area (Flexible Center) */
+        .work-area {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         /* Upload Area */
         .upload-area {
-            border: 2px dashed var(--border-color);
+            border: 2px dashed #cbd5e1;
             border-radius: var(--radius-md);
-            padding: 3.5rem 2rem;
+            padding: 4rem 2rem;
             text-align: center;
             cursor: pointer;
-            background-color: #fafafa;
-            transition: all 0.2s ease;
+            background-color: #ffffff;
+            transition: var(--transition);
         }
 
         .upload-area:hover, .upload-area.dragover {
             border-color: var(--text-muted);
-            background-color: #f1f5f9;
+            background-color: var(--primary-light);
         }
 
         .upload-icon {
@@ -198,8 +209,9 @@
         }
 
         .upload-text {
-            font-size: 0.95rem;
-            font-weight: 500;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-main);
         }
 
         .upload-hint {
@@ -220,17 +232,19 @@
             border-radius: var(--radius-md);
             overflow: hidden;
             background: #000;
-            margin-bottom: 1.5rem;
+            aspect-ratio: 4/3;
         }
 
         video {
             width: 100%;
+            height: 100%;
+            object-fit: cover;
             display: block;
         }
 
         .camera-overlay {
             position: absolute;
-            bottom: 1rem;
+            bottom: 1.5rem;
             left: 0;
             width: 100%;
             display: flex;
@@ -238,20 +252,25 @@
         }
 
         .capture-btn {
-            background: rgba(255, 255, 255, 0.9);
-            color: #000;
+            background: #ffffff;
+            color: var(--primary);
             border: none;
-            padding: 0.5rem 1.5rem;
+            padding: 0.75rem 2rem;
             border-radius: 999px;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             cursor: pointer;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            transition: transform 0.1s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transition: var(--transition);
         }
         
+        .capture-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+        }
+
         .capture-btn:active {
-            transform: scale(0.95);
+            transform: translateY(0);
         }
 
         /* Preview & Results */
@@ -260,69 +279,22 @@
             border-radius: var(--radius-md);
             overflow: hidden;
             border: 1px solid var(--border-color);
-            background: #f1f5f9;
-            margin-bottom: 1.5rem;
+            background: var(--primary-light);
+            margin-bottom: 2rem;
         }
 
         .preview-image {
             width: 100%;
             height: auto;
-            max-height: 350px;
+            max-height: 340px;
             object-fit: contain;
             display: block;
             margin: 0 auto;
         }
 
-        .action-row {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .btn {
-            display: inline-flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            padding: 0.75rem 1.5rem;
-            border-radius: var(--radius-md);
-            font-size: 0.95rem;
-            font-weight: 500;
-            cursor: pointer;
-            border: 1px solid transparent;
-            transition: all 0.2s ease;
-        }
-
-        .btn-primary {
-            background-color: var(--primary);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background-color: var(--primary-hover);
-        }
-        
-        .btn-primary:disabled {
-            background-color: var(--text-muted);
-            cursor: not-allowed;
-            opacity: 0.7;
-        }
-
-        .btn-secondary {
-            background-color: white;
-            color: var(--text-main);
-            border-color: var(--border-color);
-            display: none;
-        }
-
-        .btn-secondary:hover {
-            background-color: #f8fafc;
-        }
-
         .results-panel {
             display: none;
-            margin-top: 1.5rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid var(--border-color);
+            margin-bottom: 2rem;
         }
 
         .results-grid {
@@ -332,25 +304,77 @@
         }
 
         .result-card {
-            background-color: #f8fafc;
+            background-color: var(--bg-color);
             border: 1px solid var(--border-color);
-            padding: 1.25rem;
+            padding: 1.5rem;
             border-radius: var(--radius-md);
             text-align: center;
         }
 
         .result-label {
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             color: var(--text-muted);
             text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 0.25rem;
+            letter-spacing: 0.08em;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
         }
 
         .result-value {
-            font-size: 1.25rem;
-            font-weight: 600;
+            font-size: 1.75rem;
+            font-weight: 800;
             color: var(--text-main);
+            letter-spacing: -0.02em;
+        }
+
+        /* Buttons & Actions */
+        .action-row {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            padding: 0.85rem 1.5rem;
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: var(--transition);
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: #ffffff;
+            flex: 2;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background-color: var(--primary-hover);
+        }
+        
+        .btn-primary:disabled {
+            background-color: #cbd5e1;
+            color: #f8fafc;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            background-color: #ffffff;
+            color: var(--text-main);
+            border-color: #cbd5e1;
+            flex: 1;
+            display: none;
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--primary-light);
+            border-color: var(--text-muted);
         }
 
         .loading-spinner {
@@ -359,108 +383,130 @@
             height: 1.25rem;
             border: 2px solid rgba(255,255,255,0.3);
             border-radius: 50%;
-            border-top-color: white;
-            animation: spin 1s ease-in-out infinite;
-            margin-right: 0.5rem;
+            border-top-color: transparent;
+            animation: spin 0.8s linear infinite;
+            margin-right: 0.75rem;
         }
 
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
 
+        /* ----- Footer ----- */
+        .site-footer {
+            text-align: center;
+            padding: 2rem;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            width: 100%;
+        }
+
+        .site-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .site-footer a:hover {
+            color: var(--accent);
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
 
-    <div class="main-layout">
-        
-        <!-- Left Panel: Information -->
-        <div class="info-panel">
-            <header>
-                <h1>Gender-Age Detection</h1>
-                <p class="subtitle">Predict demographic properties from facial features in real-time.</p>
-            </header>
-
-            <div class="project-details">
-                <h3>About This Project</h3>
-                <p>This tool utilizes Deep Neural Networks (DNN) trained on computer vision models to estimate a person's age and gender. It processes the image to locate a face using a Single Shot Detector (SSD), and subsequently runs classification networks on the isolated region.</p>
-                
-                <h3>Instructions</h3>
-                <ul>
-                    <li><strong>Upload:</strong> Drag and drop a clear, well-lit portrait photo. Avoid group photos for best accuracy.</li>
-                    <li><strong>Live Camera:</strong> Ensure your face is centered and clearly visible before capturing the photo.</li>
-                </ul>
-            </div>
-
-            <div class="disclaimer">
-                <strong>Important Notice</strong> 
-                Model accuracy heavily depends on image quality. Poor lighting, extreme facial angles, occlusions (like glasses or masks), or multiple faces may result in incorrect predictions or errors. Results should be treated as estimates.
-            </div>
+    <main class="page-wrapper">
+        <div class="unified-container">
             
-            <footer>
-                Made by <a href="https://github.com/PrayatshuMisra" target="_blank" rel="noopener noreferrer">Prayatshu Misra</a>
-            </footer>
-        </div>
+            <div class="info-panel">
+                <div>
+                    <header>
+                        <h1>Gender & Age Detection</h1>
+                        <p class="subtitle">Predict demographic properties from facial features in real-time.</p>
+                    </header>
 
-        <!-- Right Panel: App Interface -->
-        <div class="app-card">
-            <div class="tabs">
-                <button class="tab active" id="tabUpload">Upload Image</button>
-                <button class="tab" id="tabCamera">Live Camera</button>
-            </div>
-
-            <!-- Upload Area -->
-            <div id="uploadView">
-                <div class="upload-area" id="dropZone">
-                    <svg class="upload-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
-                    </svg>
-                    <div class="upload-text">Click to upload or drag and drop</div>
-                    <div class="upload-hint">JPG, PNG or WEBP (Max 5MB)</div>
-                    <input type="file" id="fileInput" accept="image/jpeg, image/png, image/webp">
-                </div>
-            </div>
-
-            <!-- Camera Area -->
-            <div id="cameraView" class="camera-container">
-                <video id="videoElement" autoplay playsinline></video>
-                <div class="camera-overlay">
-                    <button class="capture-btn" id="captureBtn">Capture Photo</button>
-                </div>
-            </div>
-
-            <!-- Image Preview -->
-            <div class="preview-container" id="previewContainer">
-                <img id="imagePreview" class="preview-image" src="" alt="Image Preview">
-            </div>
-
-            <!-- Results Output -->
-            <div class="results-panel" id="resultsPanel">
-                <div class="results-grid">
-                    <div class="result-card">
-                        <div class="result-label">Estimated Gender</div>
-                        <div class="result-value" id="genderResult">-</div>
-                    </div>
-                    <div class="result-card">
-                        <div class="result-label">Estimated Age</div>
-                        <div class="result-value" id="ageResult">-</div>
+                    <div class="project-details">
+                        <h3>About This Project</h3>
+                        <p>This tool utilizes pre-trained Deep Neural Networks (DNN) to estimate a person's age and gender. It processes the image to locate a face using a Single Shot Detector (SSD), and subsequently runs classification models on the isolated region.</p>
+                        
+                        <h3>Privacy First</h3>
+                        <p><strong>Your data is completely safe.</strong> All image processing happens strictly in-memory. We do <strong>not</strong> save, store, or log any photos you upload or capture.</p>
+                        
+                        <h3>Instructions</h3>
+                        <ul>
+                            <li><strong>Upload:</strong> Drag and drop a clear, well-lit portrait photo. Avoid group photos for best accuracy.</li>
+                            <li><strong>Live Camera:</strong> Ensure your face is centered and clearly visible before capturing the photo.</li>
+                        </ul>
                     </div>
                 </div>
+
+                <div class="disclaimer">
+                    <strong>Important Notice</strong> 
+                    Model accuracy heavily depends on image quality. Poor lighting, extreme facial angles, occlusions (like glasses or masks), or multiple faces may result in incorrect predictions or errors. Results should be treated as estimates.
+                </div>
             </div>
 
-            <!-- Controls -->
-            <div class="action-row">
-                <button class="btn btn-secondary" id="resetBtn">Start Over</button>
-                <button class="btn btn-primary" id="analyzeBtn" disabled>
-                    <div class="loading-spinner" id="spinner"></div>
-                    <span id="btnText">Analyze Image</span>
-                </button>
+            <div class="app-panel">
+                
+                <div class="tabs">
+                    <button class="tab active" id="tabUpload">Upload Image</button>
+                    <button class="tab" id="tabCamera">Live Camera</button>
+                </div>
+
+                <div class="work-area">
+                    <div id="uploadView">
+                        <div class="upload-area" id="dropZone">
+                            <svg class="upload-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
+                            </svg>
+                            <div class="upload-text">Click to upload or drag and drop</div>
+                            <div class="upload-hint">JPG, PNG or WEBP (Max 5MB)</div>
+                            <input type="file" id="fileInput" accept="image/jpeg, image/png, image/webp">
+                        </div>
+                    </div>
+
+                    <div id="cameraView" class="camera-container">
+                        <video id="videoElement" autoplay playsinline></video>
+                        <div class="camera-overlay">
+                            <button class="capture-btn" id="captureBtn">Capture Photo</button>
+                        </div>
+                    </div>
+
+                    <div class="preview-container" id="previewContainer">
+                        <img id="imagePreview" class="preview-image" src="" alt="Image Preview">
+                    </div>
+
+                    <div class="results-panel" id="resultsPanel">
+                        <div class="results-grid">
+                            <div class="result-card">
+                                <div class="result-label">Estimated Gender</div>
+                                <div class="result-value" id="genderResult">-</div>
+                            </div>
+                            <div class="result-card">
+                                <div class="result-label">Estimated Age</div>
+                                <div class="result-value" id="ageResult">-</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-row">
+                    <button class="btn btn-secondary" id="resetBtn">Start Over</button>
+                    <button class="btn btn-primary" id="analyzeBtn" disabled>
+                        <div class="loading-spinner" id="spinner"></div>
+                        <span id="btnText">Analyze Image</span>
+                    </button>
+                </div>
+
             </div>
         </div>
+    </main>
 
-    </div>
+    <footer class="site-footer">
+        Made by <a href="https://github.com/PrayatshuMisra" target="_blank" rel="noopener noreferrer">Prayatshu Misra</a>
+    </footer>
 
-    <!-- Hidden canvas to grab video frame -->
     <canvas id="canvas" style="display: none;"></canvas>
 
     <script>
@@ -530,25 +576,22 @@
         }
 
         captureBtn.addEventListener('click', () => {
-            // Draw current video frame to canvas
             canvas.width = videoElement.videoWidth;
             canvas.height = videoElement.videoHeight;
             const context = canvas.getContext('2d');
             context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
             
-            // Convert to blob
             canvas.toBlob((blob) => {
                 const file = new File([blob], "camera-capture.jpg", { type: "image/jpeg" });
                 currentFile = file;
                 
-                // Show preview
                 imagePreview.src = URL.createObjectURL(blob);
                 cameraView.style.display = 'none';
                 stopCamera();
                 
                 previewContainer.style.display = 'block';
                 analyzeBtn.disabled = false;
-                resetBtn.style.display = 'block';
+                resetBtn.style.display = 'flex';
             }, 'image/jpeg', 0.95);
         });
 
@@ -586,7 +629,7 @@
                 uploadView.style.display = 'none';
                 previewContainer.style.display = 'block';
                 analyzeBtn.disabled = false;
-                resetBtn.style.display = 'block';
+                resetBtn.style.display = 'flex';
                 resultsPanel.style.display = 'none';
             }
             reader.readAsDataURL(file);
@@ -624,6 +667,7 @@
             spinner.style.display = 'inline-block';
             btnText.textContent = 'Processing...';
             resultsPanel.style.display = 'none';
+            previewContainer.style.display = 'none';
 
             const formData = new FormData();
             formData.append('image', currentFile);
@@ -642,11 +686,14 @@
                 genderResult.textContent = data.gender;
                 ageResult.textContent = data.age;
                 
-                // Restore UI state
                 spinner.style.display = 'none';
                 btnText.textContent = 'Analyze Image';
-                analyzeBtn.disabled = true; // disable since we already analyzed
+                analyzeBtn.disabled = true;
                 resetBtn.disabled = false;
+                
+                // Keep image hidden to show just results, or toggle both if desired. 
+                // Bringing preview back for context alongside results:
+                previewContainer.style.display = 'block';
                 resultsPanel.style.display = 'block';
             })
             .catch(err => {
