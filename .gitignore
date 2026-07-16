@@ -35,10 +35,6 @@ ENV/
 env.bak/
 venv.bak/
 
-# Deep Learning / Computer Vision Models (Large files)
-*.caffemodel
-*.pb
-
 # OS generated files
 .DS_Store
 .DS_Store?
